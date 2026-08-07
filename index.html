@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UGRC 110 — Academic Writing IA Quiz</title>
+  <link rel="stylesheet" href="ugrc110-quiz.css" />
+</head>
+<body>
+
+  <!-- ══ SCREEN: SETUP ══ -->
+  <div class="screen active" id="screen-setup">
+    <div class="card setup-card">
+      <div class="tag">UGRC 110 · University of Ghana</div>
+      <h1>Academic Writing IA</h1>
+      <p class="subtitle">Past Questions Quiz · Compiled by Abednego Lomazah</p>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <span class="info-val" id="q-count-display">120</span>
+          <span class="info-lbl">Questions</span>
+        </div>
+        <div class="info-box">
+          <span class="info-val">MCQ</span>
+          <span class="info-lbl">Format</span>
+        </div>
+        <div class="info-box">
+          <span class="info-val">IA</span>
+          <span class="info-lbl">Level</span>
+        </div>
+      </div>
+
+      <div class="topics">
+        <div class="topic-row"><span class="dot"></span>Academic Writing Fundamentals</div>
+        <div class="topic-row"><span class="dot"></span>Reading Techniques (SQ3R, Skimming, Scanning)</div>
+        <div class="topic-row"><span class="dot"></span>Essay Structure &amp; Paragraphing</div>
+        <div class="topic-row"><span class="dot"></span>Pre-writing, Drafting &amp; Revising</div>
+        <div class="topic-row"><span class="dot"></span>Rhetorical Modes &amp; Essay Types</div>
+        <div class="topic-row"><span class="dot"></span>Plagiarism, Citations &amp; Documentation</div>
+        <div class="topic-row"><span class="dot"></span>Grammar: Sentences &amp; Transitions</div>
+      </div>
+
+      <div class="dbl-notice">
+        Single-click to highlight · Double-click to lock your answer
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">START QUIZ</button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN: QUIZ ══ -->
+  <div class="screen" id="screen-quiz">
+
+    <!-- Top bar -->
+    <div class="quiz-bar">
+      <div class="quiz-bar-left">
+        <span class="q-num-label" id="q-num-label">Q 1 / 120</span>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="streak-box" id="streak-box">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-val" id="streak-val">0</span>
+      </div>
+      <button class="btn-quit" onclick="quitQuiz()">QUIT</button>
+    </div>
+
+    <!-- Question card -->
+    <div class="card q-card">
+      <div class="q-topic-tag" id="q-topic-tag">Topic</div>
+      <p class="q-text" id="q-text">Question text</p>
+      <div class="options" id="options-list"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="next-row" id="next-row">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">NEXT →</button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN: RESULTS ══ -->
+  <div class="screen" id="screen-results">
+    <div class="card results-card">
+      <div class="tag">Quiz Complete</div>
+      <div class="result-pct" id="result-pct">0%</div>
+      <div class="result-grade" id="result-grade">—</div>
+
+      <div class="streak-hero">
+        <span>🔥</span>
+        <div class="streak-hero-num" id="res-streak">0</div>
+        <div class="streak-hero-lbl">Best Streak</div>
+      </div>
+
+      <div class="res-grid">
+        <div class="res-box">
+          <span class="res-val green" id="res-correct">0</span>
+          <span class="res-lbl">Correct</span>
+        </div>
+        <div class="res-box">
+          <span class="res-val red" id="res-wrong">0</span>
+          <span class="res-lbl">Wrong</span>
+        </div>
+        <div class="res-box">
+          <span class="res-val" id="res-total">0</span>
+          <span class="res-lbl">Total</span>
+        </div>
+      </div>
+
+      <div class="res-btns">
+        <button class="btn-primary" onclick="retryQuiz()">TRY AGAIN</button>
+        <button class="btn-ghost" onclick="backToMenu()">MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Streak popup -->
+  <div class="streak-popup" id="streak-popup">
+    🔥 <span id="popup-num">0</span> streak!
+  </div>
+
+  <script src="ugrc110-quiz.js"></script>
+</body>
+</html>
