@@ -1645,19 +1645,54 @@ function showScreen(id) {
 /* ═══════════════════════════════════════════════════════════════
    QUIZ CONTROL
 ═══════════════════════════════════════════════════════════════ */
+const PROGRESS_KEY = 'ugrc110_progress';
+
+function saveProgress() {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify({
+      idx:       state.idx,
+      streak:    state.streak,
+      maxStreak: state.maxStreak,
+      correct:   state.correct,
+      wrong:     state.wrong,
+    }));
+  } catch(e) {}
+}
+
+function clearProgress() {
+  try { localStorage.removeItem(PROGRESS_KEY); } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
 function startQuiz() {
-  state.questions = shuffle([...QUESTIONS]);
-  state.idx       = 0;
-  state.streak    = 0;
-  state.maxStreak = 0;
-  state.correct   = 0;
-  state.wrong     = 0;
-  state.answered  = false;
-  state.pending   = null;
+  state.questions = [...QUESTIONS]; // fixed order, no shuffle
 
-  // Update total count on setup screen
+  const saved = loadProgress();
+  if (saved && saved.idx > 0 && saved.idx < state.questions.length) {
+    // Resume from saved position
+    state.idx       = saved.idx;
+    state.streak    = saved.streak    || 0;
+    state.maxStreak = saved.maxStreak || 0;
+    state.correct   = saved.correct   || 0;
+    state.wrong     = saved.wrong     || 0;
+  } else {
+    state.idx       = 0;
+    state.streak    = 0;
+    state.maxStreak = 0;
+    state.correct   = 0;
+    state.wrong     = 0;
+  }
+
+  state.answered = false;
+  state.pending  = null;
+
   document.getElementById('q-count-display').textContent = state.questions.length;
-
   showScreen('screen-quiz');
   renderQuestion();
 }
@@ -1666,7 +1701,7 @@ function retryQuiz() { startQuiz(); }
 function backToMenu() { showScreen('screen-setup'); }
 
 function quitQuiz() {
-  if (confirm('Quit quiz? Progress will be lost.')) {
+  if (confirm('Quit quiz? Progress will be saved — you can resume later.')) {
     showScreen('screen-setup');
   }
 }
@@ -1788,6 +1823,9 @@ function lockAnswer(chosen) {
     fb.innerHTML = `<span class="fb-label">✗ Incorrect — correct answer: ${keys[q.ans]}</span>${q.exp}`;
   }
 
+ // Save progress after every answer
+  saveProgress();
+
   // Show next
   document.getElementById('next-row').classList.add('show');
 }
@@ -1836,6 +1874,7 @@ function showResults() {
   document.getElementById('res-wrong').textContent   = state.wrong;
   document.getElementById('res-total').textContent   = total;
 
+  clearProgress(); // wipe save on natural completion
   showScreen('screen-results');
 }
 
